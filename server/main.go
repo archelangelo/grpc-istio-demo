@@ -39,7 +39,6 @@ func (s *server) Stream(srv pb.PingPong_StreamServer) error {
         case <- context.Done():
             return context.Err()
         default:
-
         }
 
         req, err := srv.Recv()
@@ -59,7 +58,7 @@ func (s *server) Stream(srv pb.PingPong_StreamServer) error {
         if err := srv.Send(&res); err != nil {
             log.Fatalf("error occured sending: %v", err)
         }
-        log.Printf("Sent stream");
+        log.Printf("Sent stream")
     }
 }
 
