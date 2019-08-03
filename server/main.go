@@ -15,9 +15,10 @@ const (
     port = 50051
 )
 
+// struct to implement the pingpong server
 type server struct{}
 
-// SayHello implements helloworld.GreeterServer
+// PingPongBackend implements pingpong.PingPongService
 func (s *server) PingPongBackend(ctx context.Context, in *pb.Ping) (*pb.Pong, error) {
     log.Printf("Received: %v", in.Ping)
     return &pb.Pong{Pong: "Hello " + in.Ping + "!"}, nil
