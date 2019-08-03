@@ -1,0 +1,14 @@
+package: .
+import:
+- package: github.com/golang/protobuf
+  version: ~1.3.2
+  subpackages:
+  - proto
+- package: google.golang.org/genproto
+  subpackages:
+  - googleapis/api/annotations
+- package: google.golang.org/grpc
+  version: ~1.22.1
+  subpackages:
+  - codes
+  - status
