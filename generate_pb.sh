@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 protoc \
 -I ../googleapis \
 -I pingpong/ \
