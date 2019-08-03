@@ -5,6 +5,8 @@ import (
     "fmt"
     "log"
     "net"
+    "os"
+
     //"os"
 
     "google.golang.org/grpc"
@@ -21,7 +23,11 @@ type server struct{}
 // PingPongBackend implements pingpong.PingPongService
 func (s *server) PingPongBackend(ctx context.Context, in *pb.Ping) (*pb.Pong, error) {
     log.Printf("Received: %v", in.Ping)
-    return &pb.Pong{Pong: "Hello " + in.Ping + "!"}, nil
+    hostname, err := os.Hostname()
+    if err != nil {
+        log.Fatalf("failed to get hostname: %v", err)
+    }
+    return &pb.Pong{Pong: "Hello " + in.Ping + "! This is " + fmt.Sprint(hostname) + "."}, nil
 }
 
 func main() {
