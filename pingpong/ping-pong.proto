@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package pingpong;
+package demo;
 
 import "google/api/annotations.proto";
 
@@ -12,21 +12,21 @@ message Pong {
     string pong = 1;
 }
 
-service PingPongService {
+service PingPong {
 //    rpc PingPong (Ping) returns (Pong) {
 //        option (google.api.http) = {
 //            get: "/pingpong/{ping}"
 //        };
 //    }
 //
-//    rpc PingPongStream (stream Ping) returns (stream Pong) {
-//        option (google.api.http) = {
-//            post: "/pingpong/stream"
-//            body: "*"
-//        };
-//    }
+    rpc Stream (stream Ping) returns (stream Pong) {
+        option (google.api.http) = {
+            post: "/pingpong/stream"
+            body: "*"
+        };
+    }
 
-    rpc PingPongBackend (Ping) returns (Pong) {
+    rpc Backend (Ping) returns (Pong) {
         option (google.api.http) = {
             get: "/pingpong/backdoor/{ping}"
         };
