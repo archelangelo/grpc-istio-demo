@@ -2,33 +2,35 @@ package main
 
 import (
     "context"
+    "fmt"
     "log"
     "net"
+    //"os"
 
     "google.golang.org/grpc"
-    pb ""
+    pb "../pingpong"
 )
 
 const (
-    port = ":50051"
+    port = 50051
 )
 
-// server is used to implement helloworld.GreeterServer.
 type server struct{}
 
 // SayHello implements helloworld.GreeterServer
-func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
-    log.Printf("Received: %v", in.Name)
-    return &pb.HelloReply{Message: "Hello " + in.Name}, nil
+func (s *server) PingPongBackend(ctx context.Context, in *pb.Ping) (*pb.Pong, error) {
+    log.Printf("Received: %v", in.Ping)
+    return &pb.Pong{Pong: "Hello " + in.Ping + "!"}, nil
 }
 
 func main() {
-    lis, err := net.Listen("tcp", port)
+    lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", port))
     if err != nil {
         log.Fatalf("failed to listen: %v", err)
     }
     s := grpc.NewServer()
-    pb.RegisterGreeterServer(s, &server{})
+    pb.RegisterPingPongServiceServer(s, &server{})
+    log.Printf("Listening on port: %d", port)
     if err := s.Serve(lis); err != nil {
         log.Fatalf("failed to serve: %v", err)
     }
