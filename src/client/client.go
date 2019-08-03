@@ -2,12 +2,13 @@ package main
 
 import (
 	"context"
+	"github.com/archelangelo/grpc-istio-demo/src/proto"
 	"google.golang.org/grpc"
 	"log"
 	"os"
 	"time"
 
-	pb "../pingpong"
+	pb "../proto"
 )
 
 const (
@@ -29,7 +30,7 @@ func main() {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	res, err := client.PingPongBackend(ctx, &pb.Ping{Ping: name})
+	res, err := client.PingPongBackend(ctx, &demo.Ping{Ping: name})
 	if err != nil {
 		log.Fatalf("Could not ping: %v", err)
 	}

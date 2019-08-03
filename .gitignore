@@ -130,3 +130,7 @@ logs/
 charts/
 requirements.lock
 helm/grpc-demo-setup/values.yaml
+
+### Golang ###
+vendor/
+generate_pb.sh

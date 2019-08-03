@@ -9,7 +9,7 @@ import (
     "os"
 
     "google.golang.org/grpc"
-    pb "../pingpong"
+    pb "github.com/archelangelo/grpc-istio-demo/src/proto"
 )
 
 const (
@@ -20,7 +20,7 @@ const (
 type server struct{}
 
 // Backend implements pingpong.PingPong
-func (s *server) Backend(ctx context.Context, in *pb.Ping) (*pb.Pong, error) {
+func (s *server) ShakeHand(ctx context.Context, in *pb.Ping) (*pb.Pong, error) {
     log.Printf("Received: %v", in.Ping)
     hostname, err := os.Hostname()
     if err != nil {
