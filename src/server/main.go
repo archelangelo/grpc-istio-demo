@@ -9,7 +9,7 @@ import (
     "os"
 
     "google.golang.org/grpc"
-    pb "/proto"
+    pb "github.com/archelangelo/grpc-istio-demo/src/proto"
 )
 
 const (
