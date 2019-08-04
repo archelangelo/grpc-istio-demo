@@ -16,21 +16,21 @@ const (
 	defaultName = "world"
 )
 
-//func shakeHand(conn *grpc.ClientConn) {
-//	client := pb.NewPingPongClient(conn)
-//
-//	name := defaultName
-//	if len(os.Args) > 1 {
-//		name = os.Args[1]
-//	}
-//	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-//	defer cancel()
-//	res, err := client.ShakeHand(ctx, &pb.Ping{Ping: name})
-//	if err != nil {
-//		log.Fatalf("Could not ping: %v", err)
-//	}
-//	log.Printf("Response: %s", res.Pong)
-//}
+func shakeHand(conn *grpc.ClientConn) {
+	client := pb.NewPingPongClient(conn)
+
+	name := defaultName
+	if len(os.Args) > 1 {
+		name = os.Args[1]
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := client.ShakeHand(ctx, &pb.Ping{Ping: name})
+	if err != nil {
+		log.Fatalf("Could not ping: %v", err)
+	}
+	log.Printf("Response: %s", res.Pong)
+}
 
 func streamCall(conn *grpc.ClientConn) {
 	client := pb.NewPingPongClient(conn)
@@ -91,7 +91,7 @@ func main() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	//shakeHand(conn)
-	//time.Sleep(1 * time.Second)
+	shakeHand(conn)
+	time.Sleep(1 * time.Second)
 	streamCall(conn)
 }
