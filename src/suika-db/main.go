@@ -3,27 +3,34 @@ package main
 import (
 	"os"
 	"log"
+	"context"
+	"fmt"
+	"net"
+	"strconv"
 
 	"google.golang.org/grpc"
 	pb "github.com/archelangelo/grpc-istio-demo/src/proto"
 )
 
-const (
-	port = os.Getenv("SUIKA_DB_PORT")
-)
+var port int
+
 
 type server struct{}
 
-func (s *server) Lookup(id *pb.Id) error {
+func (s *server) Lookup(ctx context.Context, id *pb.Id) (*pb.Document, error) {
 	log.Printf("Received: %v", id.Id)
-	hostname, err := os.Hostname()
+	_, err := os.Hostname()
 	if err != nil {
 		log.Fatalf("Failed to get hostname: %v", err)
 	}
-	return &pb.Document{"ZZWZ", 26, "Baoshan, Shanghai"}
+	return &pb.Document{Name: "ZZWZ", Age: 26, Address: "Baoshan, Shanghai"}, nil
 }
 
 func main() {
+	port, err := strconv.Atoi(os.Getenv("SUIKA_DB_PORT"))
+	if err != nil {
+		log.Fatalf("Failed to get port: %v", err)
+	}
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", port))
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
@@ -31,7 +38,7 @@ func main() {
 	s := grpc.NewServer()
 	pb.RegisterSuikaServer(s, &server{})
 	log.Printf("Listening on port: %d", port)
-	if err := s.Server(lis); err != nil {
+	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
 	}
 }
