@@ -119,4 +119,5 @@ func main() {
     streamCall(conn)
     time.Sleep(500 * time.Millisecond)
     checkOut(conn)
+    conn.Close()
 }
