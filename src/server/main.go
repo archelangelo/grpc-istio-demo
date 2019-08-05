@@ -7,6 +7,7 @@ import (
     "log"
     "net"
     "os"
+    "time"
 
     "google.golang.org/grpc"
     pb "github.com/archelangelo/grpc-istio-demo/src/proto"
@@ -62,7 +63,26 @@ func (s *server) Stream(srv pb.PingPong_StreamServer) error {
     }
 }
 
+func (s *server) CheckOut(ctx context.Context, in *pb.Id) (*pb.Document, error){
+    log.Printf("Received: %v", in.Id)
+    address := "localhost:" + os.Getenv("SUIKA_DB_PORT")
+
+    conn, err := grpc.Dial(address, grpc.WithInsecure())
+    if err != nil {
+        log.Fatalf("did not connect: %v", err)
+    }
+    client := pb.NewSuikaClient(conn)
+    ctx, cancel := context.WithTimeout(context.Background(), 5 * time.Second)
+    defer cancel()
+    res, err := client.Lookup(ctx, in)
+    if err != nil {
+        log.Fatalf("Could not ping: %v", err)
+    }
+    return res, err
+}
+
 func main() {
+
     lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", port))
     if err != nil {
         log.Fatalf("failed to listen: %v", err)
