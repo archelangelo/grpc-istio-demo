@@ -10,7 +10,7 @@ ENV PKG_PATH=${GOPATH}/src/${PKG_NAME}
 WORKDIR ${PKG_PATH}
 COPY . .
 
-RUN go build server/main.go -o /go/bin/server
+RUN go build -o /go/bin/server server/main.go
 
 FROM scratch
 # Copy our static executable.
