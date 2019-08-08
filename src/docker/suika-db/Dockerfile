@@ -10,7 +10,7 @@ ENV PKG_PATH=${GOPATH}/src/${PKG_NAME}
 WORKDIR ${PKG_PATH}
 COPY . .
 
-RUN go build -o /go/bin/suika-db suika-db/main.go
+RUN CGO_ENABLED=0 go build -o /go/bin/suika-db suika-db/main.go
 
 FROM scratch
 # Copy our static executable.
