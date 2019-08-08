@@ -1,3 +1,6 @@
+SERVER_TAG=0.0.1
+DB_TAG=0.0.1
+
 all: client server
 
 dep:
@@ -18,9 +21,22 @@ client: protoc
 	go build -o target/client \
 		github.com/archelangelo/grpc-istio-demo/src/client
 
+suika-db: protoc
+	@echo "Building suika-db"
+	go build -o target/suika-db \
+		github.com/archelangelo/grpc-istio-demo/src/suika-db
+
 clean:
 	go clean github.com/archelangelo/grpc-istio-demo/...
 	cd target
 	rm -f server client
 
-.PHONY: client server protoc dep
+docker-server: protoc dep
+	@echo "Building server docker image"
+	docker build -t archelangelo/grpc-demo-server:${SERVER_TAG} -f src/docker/server/Dockerfile src/.
+
+docker-db: protoc dep
+	@echo "Building suika-db docker image"
+	docker build -t archelangelo/suika-db:${DB_TAG} -f src/docker/suika-db/Dockerfile src/.
+
+.PHONY: client server protoc dep suika-db docker-server docker-db
