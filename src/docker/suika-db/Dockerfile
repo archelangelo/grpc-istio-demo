@@ -15,7 +15,7 @@ RUN CGO_ENABLED=0 go build -o /go/bin/suika-db suika-db/main.go
 FROM scratch
 # Copy our static executable.
 COPY --from=builder /go/bin/suika-db /go/bin/suika-db
-EXPOSE 50052
-ENV SUIKA_DB_PORT=50052
+EXPOSE 50051
+ENV SUIKA_DB_PORT=50051
 # Run the hello binary.
 ENTRYPOINT ["/go/bin/suika-db"]

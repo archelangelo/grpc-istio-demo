@@ -7,7 +7,7 @@ dep:
 	@echo "Install dependencies"
 	cd src && glide install
 
-protoc:
+protoc: check-env
 	@echo "Generating Go files"
 	cd src/proto && protoc -I ${GOOGLEAPIS} -I . --go_out=plugins=grpc:. *.proto
 
@@ -39,4 +39,9 @@ docker-db: protoc dep
 	@echo "Building suika-db docker image"
 	docker build -t archelangelo/suika-db:${DB_TAG} -f src/docker/suika-db/Dockerfile src/.
 
-.PHONY: client server protoc dep suika-db docker-server docker-db
+check-env:
+ifndef GOOGLEAPIS
+	exit 1
+endif
+
+.PHONY: client server protoc dep suika-db docker-server docker-db check-env
