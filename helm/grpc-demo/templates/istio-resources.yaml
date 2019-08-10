@@ -1,0 +1,36 @@
+{{- if .Values.gateway.enabled -}}
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ .Values.gateway.name }}
+  namespace: istio-system
+spec:
+  selector:
+    app: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 50051
+      name: grpc
+      protocol: HTTP2
+    hosts:
+    - "*"
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+{{- end }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "grpc-demo.fullname" . }}-vsvc
+spec:
+  gateways:
+  - {{ .Values.gateway.name }}.istio-system.svc
+  hosts:
+  - "*"
+  http:
+  - route:
+    - destination:
+        host: {{ include "grpc-demo.fullname" . }}

@@ -15,6 +15,9 @@ RUN CGO_ENABLED=0 go build -o /go/bin/server server/main.go
 FROM scratch
 # Copy our static executable.
 COPY --from=builder /go/bin/server /go/bin/server
+RUN GRPC_HEALTH_PROBE_VERSION=v0.3.0 && \
+    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
+    chmod +x /bin/grpc_health_probe
 EXPOSE 50051
 # Run the hello binary.
 ENTRYPOINT ["/go/bin/server"]

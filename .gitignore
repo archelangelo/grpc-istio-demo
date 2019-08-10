@@ -126,11 +126,6 @@ local.properties
 logs/
 .DS_Store
 
-### Helm Stuff ###
-charts/
-requirements.lock
-helm/grpc-demo-setup/values.yaml
-
 ### Golang ###
 vendor/
 generate_pb.sh
