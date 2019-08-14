@@ -31,7 +31,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to get port: %v", err)
 	}
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", port))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
