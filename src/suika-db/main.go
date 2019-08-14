@@ -1,19 +1,19 @@
 package main
 
 import (
-	"os"
-	"log"
 	"context"
 	"fmt"
+	"log"
 	"net"
+	"os"
 	"strconv"
 
-	"google.golang.org/grpc"
 	pb "github.com/archelangelo/grpc-istio-demo/src/proto"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 var port int
-
 
 type server struct{}
 
@@ -37,6 +37,8 @@ func main() {
 	}
 	s := grpc.NewServer()
 	pb.RegisterSuikaServer(s, &server{})
+	// Register reflection service on gRPC server.
+	reflection.Register(s)
 	log.Printf("Listening on port: %d", port)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
