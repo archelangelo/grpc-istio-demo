@@ -8,9 +8,9 @@ import (
     "net"
     "os"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/health"
-	healthgrpc "google.golang.org/grpc/health/grpc_health_v1"
+    "google.golang.org/grpc"
+    "google.golang.org/grpc/health"
+    healthgrpc "google.golang.org/grpc/health/grpc_health_v1"
     pb "github.com/archelangelo/grpc-istio-demo/src/proto"
 )
 
@@ -71,7 +71,7 @@ func main() {
     }
     s := grpc.NewServer()
     pb.RegisterPingPongServer(s, &server{})
-	healthgrpc.RegisterHealthServer(s, health.NewServer())
+    healthgrpc.RegisterHealthServer(s, health.NewServer())
     log.Printf("Listening on port: %d", port)
     if err := s.Serve(lis); err != nil {
         log.Fatalf("failed to serve: %v", err)
