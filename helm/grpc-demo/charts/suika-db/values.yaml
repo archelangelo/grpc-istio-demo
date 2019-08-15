@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: archelangelo/suika-db
-  tag: latest
+  tag: 0.0.1
   pullPolicy: Always
 
 imagePullSecrets: []
